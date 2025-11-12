@@ -19,11 +19,3 @@ curl http://localhost:8080/api/users
 curl http://localhost:8080/api/orders/1
 ```
 
-Arquitetura e observações
-
-- Apenas o `gateway_service` expõe porta para o host (8080). Os demais serviços permanecem na rede interna `msnet`.
-- `orders_service` faz uma requisição HTTP para `users_service` para validar existência do usuário.
-
-Melhorias possíveis (extras):
-
-- Adicionar autenticação, banco de dados (Postgres / Mongo) para persistência, tratamento de retries/timeouts, ou usar NGINX como gateway reverso.
