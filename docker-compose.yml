@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  users_service:
+    build: ./users_service
+    networks:
+      - msnet
+    restart: unless-stopped
+
+  orders_service:
+    build: ./orders_service
+    environment:
+      - USER_SERVICE_HOST=users_service
+      - USER_SERVICE_PORT=8001
+    networks:
+      - msnet
+    restart: unless-stopped
+
+  gateway_service:
+    build: ./gateway_service
+    ports:
+      - "8080:8080"
+    environment:
+      - USERS_SERVICE_HOST=users_service
+      - USERS_SERVICE_PORT=8001
+      - ORDERS_SERVICE_HOST=orders_service
+      - ORDERS_SERVICE_PORT=8002
+    networks:
+      - msnet
+    restart: unless-stopped
+
+networks:
+  msnet:
+    driver: bridge
